@@ -10,7 +10,7 @@
   order: 1;
 }
 
-#restaurants-list h1,
+#restaurants-list h3,
 #restaurants-list p {
   padding: 0 15px
 }
@@ -34,7 +34,7 @@
   padding: 20px 0;
 }
 
-#reviews-container h2,
+#reviews-container h3,
 #reviews-list {
   margin-left: 20px;
   margin-right: 20px;
@@ -86,7 +86,7 @@
     max-width: 25%;
   }
 
-  #restaurants-list h1 {
+  #restaurants-list h3 {
     font-size: 18px;
   }
 
