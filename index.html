@@ -12,7 +12,7 @@
   <title>Restaurant Reviews</title>
 </head>
 
-<body>
+<body class="home">
   <header>
     <nav>
       <h1><a href="/"><i class="fa fa-cutlery" aria-hidden="true"></i> Restaurant Reviews</a></h1>
@@ -20,10 +20,7 @@
   </header>
 
   <main id="maincontent">
-    <section id="map-container">
-      <div id="map"></div>
-    </section>
-    <section>
+    <section id="restaurant-content">
       <div class="filter-options">
         <h2>Filter Results</h2>
         <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
@@ -34,6 +31,9 @@
         </select>
       </div>
       <ul id="restaurants-list"></ul>
+    </section>
+    <section id="map-container">
+      <div id="map"></div>
     </section>
   </main>
 
