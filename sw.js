@@ -33,7 +33,7 @@ self.addEventListener("fetch", event => {
     if (cacheUrlObj.hostname !== "localhost") {
         event.request.mode = "no-cors";
     }
-cache
+
     event.respondWith(
         caches.match(cacheRequest).then(response => {
             return (
@@ -41,14 +41,14 @@ cache
                 fetch(event.request)
                     .then(fetchResponse => {
                         return caches.open(cacheID).then(cache => {
-                            cache.put(event.request.fetchResponse.clone());
+                            cache.put(event.request, fetchResponse.clone());
                             return fetchResponse;
                         });
                     })
                     .catch(error => {
-                        if (event.request.url.indexOf(".jpg") > -1) {
+                        /*if (event.request.url.indexOf(".jpg") > -1) {
                             return caches.match("/img/na.png");
-                        }
+                        }*/
                         return new Response("Application is not connected to the internet", {
                             status: 404,
                             statusText: "Application is not connected to the internet"
@@ -57,4 +57,4 @@ cache
             );
         })
     );
-})
+});
