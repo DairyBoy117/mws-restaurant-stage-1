@@ -14,6 +14,7 @@ self.addEventListener("install", event => {
                     "/js/dbhelper.js",
                     "/js/main.js",
                     "/js/restaurant_info.js",
+                    "/img/na.png",
                     "/js.register.js"
                 ])
                 .catch(error => {
@@ -46,9 +47,9 @@ self.addEventListener("fetch", event => {
                         });
                     })
                     .catch(error => {
-                        /*if (event.request.url.indexOf(".jpg") > -1) {
+                        if (event.request.url.indexOf(".jpg") > -1) {
                             return caches.match("/img/na.png");
-                        }*/
+                        }
                         return new Response("Application is not connected to the internet", {
                             status: 404,
                             statusText: "Application is not connected to the internet"
