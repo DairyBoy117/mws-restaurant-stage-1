@@ -16,7 +16,9 @@ self.addEventListener('install', function(event) {
                 "/js/main.js",
                 "/js/restaurant_info.js",
                 "/js.register.js"
-            ])
+            ]).catch(function(error){
+                console.log("Failed to open cache D:")
+            });
         })
     );
 });
