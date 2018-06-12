@@ -22,3 +22,23 @@ self.addEventListener('install', function(event) {
         })
     );
 });
+
+/* Listen for fetch event, return cache items if it has them */
+self.addEventListener("fetch", function(event) {
+    event.respondWith(
+        caches.match(event.request).then(function(response) {
+            return ( response || fetch(event.request).then(function(fetchResponse) {
+                return caches.open(staticCache).then(function(cache) {
+                        cache.put(event.request, fetchResponse.clone());
+                        return fetchResponse;
+                    });
+                }).catch(function(error) {
+                    return new Response("Not connected to internet", {
+                        status: 404,
+                        statusText: "Not connected to internet"
+                    });
+                })
+            );
+        })
+    );
+});
