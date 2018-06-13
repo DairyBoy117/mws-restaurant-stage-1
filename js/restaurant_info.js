@@ -97,6 +97,7 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h3');
   title.innerHTML = 'Reviews';
+  title.setAttribute('tabindex', '0');
   container.appendChild(title);
 
   if (!reviews) {
@@ -117,7 +118,10 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
  */
 createReviewHTML = (review) => {
   const li = document.createElement('li');
-  const name = document.createElement('p');
+  li.setAttribute('tabindex', '0');
+
+  const name = document.createElement('h4');
+  name.setAttribute('tabindex', '0');
   name.innerHTML = review.name;
   li.appendChild(name);
 
@@ -131,7 +135,10 @@ createReviewHTML = (review) => {
 
   const comments = document.createElement('p');
   comments.innerHTML = review.comments;
+  comments.setAttribute('tabindex', '0');
   li.appendChild(comments);
+
+  li.setAttribute('aria-label', 'Review from ' + review.name);
 
   return li;
 }
@@ -142,7 +149,10 @@ createReviewHTML = (review) => {
 fillBreadcrumb = (restaurant=self.restaurant) => {
   const breadcrumb = document.getElementById('breadcrumb');
   const li = document.createElement('li');
-  li.innerHTML = restaurant.name;
+  const a = document.createElement('a');
+  a.innerHTML = restaurant.name;
+  a.setAttribute('aria-current', 'page');
+  li.appendChild(a);
   breadcrumb.appendChild(li);
 }
 

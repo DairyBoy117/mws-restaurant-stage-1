@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <meta charset="utf-8">
@@ -20,9 +20,9 @@
   </header>
 
   <main id="maincontent">
-    <section id="restaurant-content" tabindex="0">
-      <div class="filter-options">
-        <h2>Filter Results</h2>
+    <section id="restaurant-content" >
+      <div role="group" class="filter-options" aria-labelledby="filterSection">
+        <h2 tabindex="0" id="filterSection">Filter Results</h2>
         <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
           <option value="all">All Neighborhoods</option>
         </select>
@@ -33,7 +33,7 @@
       <ul id="restaurants-list"></ul>
     </section>
     <section id="map-container">
-      <div id="map"></div>
+      <div id="map" role="application" aria-label="Google Map"></div>
     </section>
   </main>
 
