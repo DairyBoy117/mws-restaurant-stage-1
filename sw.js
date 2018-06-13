@@ -1,11 +1,10 @@
-/* Create static cache */
 var staticCache = "static-cache-v1";
 
-/* Installing the service worker */
+
 self.addEventListener("install", function(event) {
-    event.waitUntil( //App is instructed to wait 
+    event.waitUntil(
         caches.open(staticCache).then(function(cache) {
-            return cache.addAll([ //adds items into new static-cache-v1
+            return cache.addAll([
                 "/",
                 "/index.html",
                 "/css/styles.css",
@@ -23,12 +22,12 @@ self.addEventListener("install", function(event) {
     );
 });
 
-/* Listen for fetch event */
+
 self.addEventListener("fetch", function(event) {
     event.respondWith(
         caches.match(event.request).then(function(response) {
             return ( response || fetch(event.request).then(function(fetchResponse) {
-                return caches.open(staticCache).then(function(cache) { //returns cached items if it has them
+                return caches.open(staticCache).then(function(cache) {
                         cache.put(event.request, fetchResponse.clone());
                         return fetchResponse;
                     });
