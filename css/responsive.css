@@ -107,7 +107,7 @@
 
 @media screen and (min-width: 1080px) {
   #maincontent {
-    max-width: 1080px;
+    max-width: 100%;
     margin: 0 auto;
   }
  
