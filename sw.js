@@ -1,4 +1,4 @@
-var staticCache = "static-cache-v1";
+/*var staticCache = "static-cache-v1";
 
 
 self.addEventListener("install", function(event) {
@@ -41,3 +41,4 @@ self.addEventListener("fetch", function(event) {
         })
     );
 });
+*/
