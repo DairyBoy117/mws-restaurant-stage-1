@@ -1,4 +1,4 @@
-/*var staticCache = "static-cache-v1";
+var staticCache = "static-cache-v1";
 
 
 self.addEventListener("install", function(event) {
@@ -9,7 +9,6 @@ self.addEventListener("install", function(event) {
                 "/index.html",
                 "/css/styles.css",
                 "/css/responsive.css",
-                "/data/restaurants.json",
                 "/js/",
                 "/js/dbhelper.js",
                 "/js/main.js",
@@ -41,4 +40,3 @@ self.addEventListener("fetch", function(event) {
         })
     );
 });
-*/
