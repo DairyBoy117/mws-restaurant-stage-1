@@ -21,6 +21,13 @@ class DBHelper {
       console.log('This browser doesn\'t support IndexedDB');
       return;
     }
+
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+      }
+    };
     /*let xhr = new XMLHttpRequest();
     xhr.open('GET', DBHelper.DATABASE_URL);
     xhr.onload = () => {
@@ -37,7 +44,7 @@ class DBHelper {
 
     const dbPromise = idb.open('restaurant-db', 1, function(upgradeDB) {
       const store = upgradeDB.createObjectStore('restaurants', { keyPath: 'id' });
-      if (!upgradeDb.objectStoreNames.contains('restaurants')) {
+      if (!upgradeDB.objectStoreNames.contains('restaurants')) {
         upgradeDB.createObjectStore('restaurants', { keyPath: 'id' });
         store.createIndex('by-neighborhood', 'neighborhood');
         store.createIndex('by-cuisine', 'cuisine_type');
