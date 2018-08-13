@@ -1,4 +1,4 @@
-var staticCache = "static-cache-v1";
+var staticCache = "static-cache-v4";
 
 
 self.addEventListener("install", function(event) {
@@ -7,6 +7,7 @@ self.addEventListener("install", function(event) {
             return cache.addAll([
                 "/",
                 "/index.html",
+                "/restaurant.html",
                 "/css/styles.css",
                 "/css/responsive.css",
                 "/data/restaurants.json",
@@ -14,7 +15,8 @@ self.addEventListener("install", function(event) {
                 "/js/dbhelper.js",
                 "/js/main.js",
                 "/js/restaurant_info.js",
-                "/js.register.js"
+                "/js/register.js",
+                "/js/idb.js"
             ]).catch(function(error){
                 console.log("Failed to open cache D:")
             });

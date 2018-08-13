@@ -17,11 +17,10 @@ class DBHelper {
    * Fetch all restaurants.
    */
   static fetchRestaurants(callback) {
-    fetch(`${DBHelper.DATABASE_URL}`)
-      .then(function(response) {
-        return response.json();
-      }).then(data => callback(null, data))
-      .catch(error => callback('Request failed, Returned status of ${error.statusText}', null));
+    if (!('indexedDB' in window)) {
+      console.log('This browser doesn\'t support IndexedDB');
+      return;
+    }
     /*let xhr = new XMLHttpRequest();
     xhr.open('GET', DBHelper.DATABASE_URL);
     xhr.onload = () => {
@@ -35,6 +34,39 @@ class DBHelper {
       }
     };
     xhr.send(); */
+
+    const dbPromise = idb.open('restaurant-db', 1, function(upgradeDB) {
+      const store = upgradeDB.createObjectStore('restaurants', { keyPath: 'id' });
+      if (!upgradeDb.objectStoreNames.contains('restaurants')) {
+        upgradeDB.createObjectStore('restaurants', { keyPath: 'id' });
+        store.createIndex('by-neighborhood', 'neighborhood');
+        store.createIndex('by-cuisine', 'cuisine_type');
+      }
+    });
+
+    dbPromise.then(function(db) {
+        const tx = db.transaction('restaurants', 'readwrite');
+        const resp = tx.objectStore('restaurants');
+        return resp.getAll();
+      })
+      .then(function(restaurants) {
+        if(restaurants.length !== 0) {
+          callback(null, restaurants)
+        } else {
+          fetch(DBHelper.DATABASE_URL, options)
+            .then(resp => resp.json())
+            .then(restaurants => {
+              dbPromise.then(function(db) {
+                const tx = db.transaction('restaurants', 'readwrite');
+                const resp = tx.objectStore('restaurants');
+                restaurants.forEach(restaurant => resp.put(restaurant));
+                callback(null, restaurants);
+                return tx.complete;
+              });
+            })
+            .catch(error => callback(error, null));
+        }
+      });
   }
   
 
