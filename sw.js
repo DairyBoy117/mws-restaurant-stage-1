@@ -16,7 +16,8 @@ self.addEventListener("install", function(event) {
                 "/js/main.js",
                 "/js/restaurant_info.js",
                 "/js/register.js",
-                "/js/idb.js"
+                "/js/idb.js",
+                "/img/logo.png"
             ]).catch(function(error){
                 console.log("Failed to open cache D:")
             });
