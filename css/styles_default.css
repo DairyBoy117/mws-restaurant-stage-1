@@ -22,6 +22,13 @@ ul, li {
 	font-size: 18px;
 	color: #333;
 }
+img {
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+img[data-src] {
+  opacity: 0;
+}
 a, button {
 	color: #EE7600;
   text-decoration: none;
@@ -111,7 +118,15 @@ nav h1 a {
   height: 400px;
   width: 100%;
   background-color: #ccc;
+  display: none;
 }
+
+#show-map button:hover {
+  cursor: pointer;
+  background-color: #f3f3f3;
+  color: #EE7600;
+}
+
 /* ====================== Restaurant Filtering ====================== */
 .filter-options {
   background-color: #3397DB;
@@ -174,7 +189,8 @@ nav h1 a {
   margin: 0;
   font-size: 18px;
 }
-#restaurants-list li button {
+#restaurants-list li button,
+#show-map button {
   background-color: #EE7600;
   border: 2px solid #EE7600;
   color: #fff;

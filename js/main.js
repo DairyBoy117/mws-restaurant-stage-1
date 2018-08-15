@@ -192,3 +192,8 @@ addMarkersToMap = (restaurants = self.restaurants) => {
     self.markers.push(marker);
   });
 }
+
+
+/**
+ * Hide / Show map.
+ */
