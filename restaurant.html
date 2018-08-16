@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="utf-8">
+  <link rel="manifest" href="/manifest.json">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="theme-color" content="#3397DB"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -54,7 +55,10 @@
     <!-- End reviews -->
     <!-- Beginning map -->
     <section id="map-container">
-      <div id="map" role="application" aria-label="Google Map"></div>
+      <div id="map" class="hidden" role="application" aria-label="Google Map"></div>
+      <div id="show-map">
+        <button onclick="showMap()">Show Map</button>
+      </div>
     </section>
     <!-- End map -->
   </main>
@@ -69,6 +73,7 @@
   <!-- Beginning scripts -->
   <!-- Database helpers -->
   <script type="text/javascript" src="js/dbhelper.js"></script>
+  <script type="application/javascript" charset="utf-8" src="js/main.js"></script>
   <!-- Main javascript file -->
   <script type="text/javascript" src="js/restaurant_info.js"></script>
   <!-- Service Worker files -->

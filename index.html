@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="utf-8">
+  <link rel="manifest" href="/manifest.json">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="theme-color" content="#3397DB"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,11 +35,10 @@
       <ul id="restaurants-list"></ul>
     </section>
     <section id="map-container">
-<<<<<<< HEAD
-      <div id="map"  role="application" aria-label="Google Map"></div>
-=======
-      <div id="map" role="application" aria-label="Google Map"></div>
->>>>>>> parent of d6788ac... Getting app passing in Lighthouse
+      <div id="map" class="hidden" role="application" aria-label="Google Map"></div>
+      <div id="show-map">
+        <button onclick="showMap()">Show Map</button>
+      </div>
     </section>
   </main>
 
