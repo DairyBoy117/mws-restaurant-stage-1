@@ -192,6 +192,7 @@ addMarkersToMap = (restaurants = self.restaurants) => {
     self.markers.push(marker);
   });
 }
+<<<<<<< HEAD
 
 
 /**
@@ -201,3 +202,5 @@ function showMap() {
   let element = document.getElementById("map");
   element.classList.toggle("hidden");
 }*/
+=======
+>>>>>>> parent of d6788ac... Getting app passing in Lighthouse

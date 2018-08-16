@@ -22,13 +22,6 @@ ul, li {
 	font-size: 18px;
 	color: #333;
 }
-img {
-  opacity: 1;
-  transition: opacity 0.3s;
-}
-img[data-src] {
-  opacity: 0;
-}
 a, button {
 	color: #EE7600;
   text-decoration: none;
@@ -118,6 +111,7 @@ nav h1 a {
   height: 400px;
   width: 100%;
   background-color: #ccc;
+<<<<<<< HEAD:css/styles_default.css
 }
 
 #map.hidden {
@@ -128,8 +122,9 @@ nav h1 a {
   cursor: pointer;
   background-color: #f3f3f3;
   color: #EE7600;
+=======
+>>>>>>> parent of d6788ac... Getting app passing in Lighthouse:css/styles.css
 }
-
 /* ====================== Restaurant Filtering ====================== */
 .filter-options {
   background-color: #3397DB;
@@ -192,8 +187,7 @@ nav h1 a {
   margin: 0;
   font-size: 18px;
 }
-#restaurants-list li button,
-#show-map button {
+#restaurants-list li button {
   background-color: #EE7600;
   border: 2px solid #EE7600;
   color: #fff;
