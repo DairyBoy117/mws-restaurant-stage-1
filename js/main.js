@@ -196,4 +196,8 @@ addMarkersToMap = (restaurants = self.restaurants) => {
 
 /**
  * Hide / Show map.
- */
+ 
+function showMap() {
+  let element = document.getElementById("map");
+  element.classList.toggle("hidden");
+}*/

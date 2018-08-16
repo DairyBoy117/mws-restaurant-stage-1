@@ -118,7 +118,10 @@ nav h1 a {
   height: 400px;
   width: 100%;
   background-color: #ccc;
-  display: none;
+}
+
+#map.hidden {
+ /* display: none; */
 }
 
 #show-map button:hover {
