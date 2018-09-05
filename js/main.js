@@ -172,7 +172,7 @@ createRestaurantHTML = (restaurant) => {
   favorite.id = "favorite-icon-" + restaurant.id;
   favorite.onclick = event => handleFavoriteClick(restaurant.id, !isFavorite);
   favoriteDiv.append(favorite);
-  div.append(favoriteDiv);
+  li.append(favoriteDiv);
 
   const neighborhood = document.createElement('p');
   neighborhood.innerHTML = restaurant.neighborhood;
