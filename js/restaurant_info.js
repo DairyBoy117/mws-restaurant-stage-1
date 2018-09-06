@@ -49,6 +49,22 @@ fetchRestaurantFromURL = (callback) => {
  * Create restaurant HTML and add it to the webpage
  */
 fillRestaurantHTML = (restaurant = self.restaurant) => {
+  const div = document.getElementById("maincontent");
+  const isFavorite = (restaurant["is_favorite"] && restaurant["is_favorite"].toString() === "true") ? true : false;
+  const favoriteDiv = document.createElement("div");
+  favoriteDiv.className = "favorite-icon";
+  const favorite = document.createElement("button");
+  favorite.style.background = isFavorite
+  ? 'url("/icons/002-live.svg") no-repeat'
+  : 'url("/icons/001-live-1.svg") no-repeat';
+  favorite.innerHTML = isFavorite
+  ? restaurant.name + " is a favorite"
+  : restaurant.name + " is not a favorite";
+  favorite.id = "favorite-icon-" + restaurant.id;
+  favorite.onclick = event => handleFavoriteClick(restaurant.id, !isFavorite);
+  favoriteDiv.append(favorite);
+  div.append(favoriteDiv);
+  
   const name = document.getElementById('restaurant-name');
   name.innerHTML = restaurant.name;
 
