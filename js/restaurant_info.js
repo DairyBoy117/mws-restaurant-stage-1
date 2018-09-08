@@ -54,12 +54,9 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   const favoriteDiv = document.createElement("div");
   favoriteDiv.className = "favorite-icon";
   const favorite = document.createElement("button");
-  favorite.style.background = isFavorite
-  ? 'url("/icons/002-live.svg") no-repeat'
-  : 'url("/icons/001-live-1.svg") no-repeat';
   favorite.innerHTML = isFavorite
-  ? restaurant.name + " is a favorite"
-  : restaurant.name + " is not a favorite";
+  ? "<i class='fas fa-heart'></i> <span>" + restaurant.name + " is a favorite</span>"
+  : "<i class='far fa-heart'></i> <span>" + restaurant.name + " is not a favorite</span>";
   favorite.id = "favorite-icon-" + restaurant.id;
   favorite.onclick = event => handleFavoriteClick(restaurant.id, !isFavorite);
   favoriteDiv.append(favorite);
@@ -79,6 +76,11 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
 
   const cuisine = document.getElementById('restaurant-cuisine');
   cuisine.innerHTML = restaurant.cuisine_type;
+
+  const addReview = document.getElementById('add-review');
+  const reviewButton = document.createElement("a");
+  reviewButton.setAttribute('href', `/review.html?id=${restaurant.id}`);
+  addReview.append(reviewButton);
 
   // fill operating hours
   if (restaurant.operating_hours) {

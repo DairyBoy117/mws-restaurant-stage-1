@@ -158,17 +158,13 @@ createRestaurantHTML = (restaurant) => {
   name.append(nameLink);
   li.append(name);
 
-  console.log("is_favorite: ", restaurant["is_favorite"]);
   const isFavorite = (restaurant["is_favorite"] && restaurant["is_favorite"].toString() === "true") ? true : false;
   const favoriteDiv = document.createElement("div");
   favoriteDiv.className = "favorite-icon";
   const favorite = document.createElement("button");
-  favorite.style.background = isFavorite
-  ? 'url("/icons/002-live.svg") no-repeat'
-  : 'url("/icons/001-live-1.svg") no-repeat';
   favorite.innerHTML = isFavorite
-  ? restaurant.name + " is a favorite"
-  : restaurant.name + " is not a favorite";
+  ? "<i class='fas fa-heart'></i> <span>" + restaurant.name + " is a favorite</span>"
+  : "<i class='far fa-heart'></i> <span>" + restaurant.name + " is not a favorite</span>";
   favorite.id = "favorite-icon-" + restaurant.id;
   favorite.onclick = event => handleFavoriteClick(restaurant.id, !isFavorite);
   favoriteDiv.append(favorite);
@@ -217,3 +213,11 @@ function showMap() {
   element.classList.toggle("hidden");
 }
 
+
+const handleFavoriteClick = () => {
+  fetch(`http://localhost:1337/restaurants/${e.data.id}/?is_favorite=${e.data.value}`, {
+      method: 'PUT'
+  }).then(function(res){
+      return res.json()
+  });
+}
