@@ -158,18 +158,6 @@ createRestaurantHTML = (restaurant) => {
   name.append(nameLink);
   li.append(name);
 
-  const isFavorite = (restaurant["is_favorite"] && restaurant["is_favorite"].toString() === "true") ? true : false;
-  const favoriteDiv = document.createElement("div");
-  favoriteDiv.className = "favorite-icon";
-  const favorite = document.createElement("button");
-  favorite.innerHTML = isFavorite
-  ? "<i class='fas fa-heart'></i> <span>" + restaurant.name + " is a favorite</span>"
-  : "<i class='far fa-heart'></i> <span>" + restaurant.name + " is not a favorite</span>";
-  favorite.id = "favorite-icon-" + restaurant.id;
-  favorite.onclick = event => handleFavoriteClick(restaurant.id, !isFavorite);
-  favoriteDiv.append(favorite);
-  li.append(favoriteDiv);
-
   const neighborhood = document.createElement('p');
   neighborhood.innerHTML = restaurant.neighborhood;
   li.append(neighborhood);

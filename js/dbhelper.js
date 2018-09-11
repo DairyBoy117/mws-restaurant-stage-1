@@ -1,3 +1,5 @@
+let dbPromise;
+
 
 /**
  * Common database helper functions.
@@ -42,8 +44,9 @@ class DBHelper {
     };
     xhr.send(); */
 
-    const dbPromise = idb.open('restaurant-db', 1, function(upgradeDB) {
+    dbPromise = idb.open('restaurant-db', 1, function(upgradeDB) {
       const store = upgradeDB.createObjectStore('restaurants', { keyPath: 'id' });
+      const favoriteValStore = upgradeDB.createObjectStore('favorites');
       if (!upgradeDB.objectStoreNames.contains('restaurants')) {
         upgradeDB.createObjectStore('restaurants', { keyPath: 'id' });
         store.createIndex('by-neighborhood', 'neighborhood');
@@ -76,6 +79,84 @@ class DBHelper {
       });
   }
   
+
+  /**
+   * Fetch favorite restaurants.
+   */
+   
+   static fetchFavorites(callback) {
+     fetch(`${DBHelper.DATABASE_URL}/?is_favorite=true`)
+     .then(response => response.json())
+     .then(function(favorites){
+       dbPromise.then( (db) => {
+         let favoriteValStore = db.transaction('favorites', 'readwrite').objectStore('favorites')
+         for (const favorite of favorites) {
+           favoriteValStore.put(favorite, favorite.id);
+         }
+       })
+       callback(null, favorites);
+     }).catch(function (err) {
+      dbPromise.then( (db) => {
+        let favoriteValStore = db.transaction('favorites').objectStore('favorites')
+        return favoriteValStore.getAll();
+      }).then(val => {
+        console.log("Failed to catch favorites from server, pulled from cache");
+        callback(null, val);
+      })
+     })
+   }
+
+  /**
+   * Fetch favorite restaurants by ID
+   */
+  static fetchFavoriteById(id, callback) {
+    DBHelper.fetchFavorites((error, restaurants) => {
+      if (error) {
+        callback(error, null)
+      } else {
+        const restaurant = restaurants.find(r => r.id == id);
+        if (restaurant) {
+          callback(null, restaurant);
+        } else {
+          callback('restaurant does not exist', null);
+        }
+      }
+    })
+  }
+
+  static favoriteRestaurantById(restaurant, callback) {
+    fetch(`${DBHelper.DATABASE_URL}/${restaurant.id}/?is_favorite=true`, {
+      method: "PUT"
+    }).then(response => response.json())
+      .then(function(newRestaurant) {
+        console.log("added Favorite")
+        callback(null, newRestaurant);
+      }).catch(function (err) {
+        console.log("Connection issue, failed to favorite it");
+        callback(err, null);
+      })
+    dbPromise.then( (db) => {
+        let favoriteValStore = db.transaction('favorites', 'readwrite').objectStore('favorites')
+        favoriteValStore.put(restaurant, restaurant.id); 
+    }) 
+  }
+
+  static unfavoriteRestaurantById(restaurant, callback) {
+    fetch(`${DBHelper.DATABASE_URL}/${restaurant.id}/?is_favorite=false`, {
+      method: "PUT"
+    }).then(response => response.json())
+      .then(function(newRestaurant) {
+        console.log("removed Favorite")
+        callback(null, newRestaurant);
+      }).catch(function (err) {
+        console.log("Connection issue, failed to unfavorite it");
+        callback(err, null);
+      })
+    dbPromise.then( (db) => {
+        let favoriteValStore = db.transaction('favorites', 'readwrite').objectStore('favorites')
+        favoriteValStore.delete(restaurant.id); 
+    }) 
+  }
 
   /**
    * Fetch a restaurant by its ID.
@@ -212,5 +293,7 @@ class DBHelper {
     );
     return marker;
   }
+
+
 
 }

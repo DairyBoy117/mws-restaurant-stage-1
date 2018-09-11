@@ -1,5 +1,6 @@
 let restaurant;
 var map;
+let isFavorite;
 
 /**
  * Initialize Google map, called from HTML.
@@ -39,7 +40,9 @@ fetchRestaurantFromURL = (callback) => {
         console.error(error);
         return;
       }
+      fetchIfFavorite(id);
       fillRestaurantHTML();
+
       callback(null, restaurant)
     });
   }
@@ -50,17 +53,18 @@ fetchRestaurantFromURL = (callback) => {
  */
 fillRestaurantHTML = (restaurant = self.restaurant) => {
   const div = document.getElementById("maincontent");
-  const isFavorite = (restaurant["is_favorite"] && restaurant["is_favorite"].toString() === "true") ? true : false;
+ /*console.log(restaurant);
+  isFavorite = (restaurant["is_favorite"] && restaurant["is_favorite"].toString() === "true") ? true : false;
   const favoriteDiv = document.createElement("div");
   favoriteDiv.className = "favorite-icon";
   const favorite = document.createElement("button");
   favorite.innerHTML = isFavorite
-  ? "<i class='fas fa-heart'></i> <span>" + restaurant.name + " is a favorite</span>"
-  : "<i class='far fa-heart'></i> <span>" + restaurant.name + " is not a favorite</span>";
-  favorite.id = "favorite-icon-" + restaurant.id;
-  favorite.onclick = event => handleFavoriteClick(restaurant.id, !isFavorite);
+  ? "<i class='fas fa-heart'></i> <span>Restaurant is a favorite</span>"
+  : "<i class='far fa-heart'></i> <span>Restaurant is not a favorite</span>";
+  favorite.id = "favorite-icon";
+  favorite.onclick = event => toggleFavorite(restaurant.id, !isFavorite);
   favoriteDiv.append(favorite);
-  div.append(favoriteDiv);
+  div.append(favoriteDiv);*/
   
   const name = document.getElementById('restaurant-name');
   name.innerHTML = restaurant.name;
@@ -89,6 +93,64 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   // fill reviews
   fillReviewsHTML();
 }
+
+fetchIfFavorite = (id) => {
+  DBHelper.fetchFavoriteById(id, (error, restaurant) => {
+    let favorite = restaurant;
+    if (!favorite) {
+      console.log("Not favorite :(");
+      return;
+    } else {
+      setFavorite();
+    }
+  });
+}
+
+setFavorite = () => {
+  let checkbox = document.getElementById('isFavorited');
+  checkbox.checked = true;
+  checkbox.setAttribute("checked", "true");
+  checkbox.setAttribute("aria-checked", "true");
+  let header = document.getElementById('favoriteHeader');
+  header.innerHTML = "Favorited";
+}
+
+
+let checkbox = document.getElementById('isFavorited');
+checkbox.addEventListener("click", function() {
+  if (checkbox.checked === true) {
+    // add to favorites dbhelper
+    DBHelper.favoriteRestaurantById(self.restaurant, (error, restaurant) => {
+      let favorite = restaurant;
+      if (!favorite) {
+        console.log('Did not favorite successfully')
+        return;
+      } else {
+        let checkbox = document.getElementById('isFavorited');
+        checkbox.checked = true;
+        checkbox.setAttribute("checked", "true");
+        checkbox.setAttribute("aria-checked", "true");
+        let header = document.getElementById('favoriteHeader');
+        header.innerHTML = "Favorited";
+      }
+    })
+  } else {
+    DBHelper.unfavoriteRestaurantById(self.restaurant, (error, restaurant) => {
+      let favorite = restaurant;
+      if (!favorite) {
+        console.log('Did not unfavorite successfully')
+        return;
+      } else {
+        let checkbox = document.getElementById('isFavorited');
+        checkbox.checked = false;
+        checkbox.setAttribute("checked", "false");
+        checkbox.setAttribute("aria-checked", "false");
+        let header = document.getElementById('favoriteHeader');
+        header.innerHTML = "Add to Favorites";
+      }
+    })
+  }
+})
 
 /**
  * Create restaurant operating hours HTML table and add it to the webpage.
