@@ -30,22 +30,11 @@ class DBHelper {
         'Content-Type': 'application/json; charset=utf-8',
       }
     };
-    /*let xhr = new XMLHttpRequest();
-    xhr.open('GET', DBHelper.DATABASE_URL);
-    xhr.onload = () => {
-      if (xhr.status === 200) { // Got a success response from server!
-        const json = JSON.parse(xhr.responseText);
-        const restaurants = json.restaurants;
-        callback(null, restaurants);
-      } else { // Oops!. Got an error from server.
-        const error = (`Request failed. Returned status of ${xhr.status}`);
-        callback(error, null);
-      }
-    };
-    xhr.send(); */
 
     dbPromise = idb.open('restaurant-db', 1, function(upgradeDB) {
       const store = upgradeDB.createObjectStore('restaurants', { keyPath: 'id' });
+      const reviewsValStore = upgradeDB.createObjectStore('reviews');
+      const tempReviewsValStore = upgradeDB.createObjectStore('tempReviews');
       const favoriteValStore = upgradeDB.createObjectStore('favorites');
       if (!upgradeDB.objectStoreNames.contains('restaurants')) {
         upgradeDB.createObjectStore('restaurants', { keyPath: 'id' });
@@ -78,7 +67,87 @@ class DBHelper {
         }
       });
   }
+
+  /**
+   * Fetch reviews.
+   */
+
+  static fetchRestaurantReviews(restaurant, callback) {
+    fetch(`http://localhost:1337/reviews/?restaurant_id=${restaurant.id}`)
+      .then(response => response.json())
+      .then(function(reviews) {
+        dbPromise.then( (db) => {
+          let reviewsValStore = db.transaction('reviews', 'readwrite').objectStore('reviews')
+          reviewsValStore.put(reviews, restaurant.id)
+        })
+        callback(null, reviews)
+      }).catch(function (err) {
+        dbPromise.then( (db) => {
+          let reviewsValStore = db.transaction('reviews').objectStore('reviews')
+          return reviewsValStore.get(restaurant.id);
+        }).then(val => {
+          console.log('Failed to fetch reviews, pulled from cache');
+          callback(null, val)
+        })
+      })
+  }
   
+  /**
+   * Submit reviews.
+   */
+
+  static submitReview(review, callback) {
+    dbPromise.then((db) => {
+      let tempReviewsValStore = db.transaction('tempReviews', 'readwrite').objectStore('tempReviews')
+      tempReviewsValStore.put(review, review.restaurant_id)
+    })
+    fetch( `http://localhost:1337/reviews`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+      body: JSON.stringify(review)
+    }).then(response => response.json())
+      .then(function(newReview) {
+        dbPromise.then((db) => {
+          let tempReviewsValStore = db.transaction('tempReviews', 'readwrite').objectStore('tempReviews')
+          tempReviewsValStore.delete(review.restaurant_id)
+        })
+        console.log("added Review, removed from cache")
+        callback(null, newReview);
+      }).catch(function(err) {
+        console.log("Connection Issue, failed");
+        window.alert("Currently Offline!")
+        callback(err, null);
+      })
+  }
+
+  /**
+   * Fetch pending reviews.
+   */
+
+   static fetchPendingReviews(restaurant, callback) {
+     dbPromise.then((db) => {
+       let tempReviewsValStore = db.transaction('tempReviews', 'readwrite').objectStore('tempReviews')
+       return tempReviewsValStore.get(restaurant.id.toString())
+     }).then(tempReview => {
+       if (!tempReview) {
+         callback(null, null)
+         return
+       }
+       this.submitReview(tempReview, (error, review) => {
+         if (error) {
+           console.log("Offline again, returning tempReview")
+           console.log(tempReview)
+           callback(tempReview, null)
+         } else {
+           console.log("successful POSTing tempReview")
+           callback(null, review)
+         }
+       })
+     })
+   }
+
 
   /**
    * Fetch favorite restaurants.

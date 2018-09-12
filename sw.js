@@ -1,4 +1,4 @@
-var staticCache = "static-cache-v9";
+var staticCache = "static-cache-v1";
 
 
 self.addEventListener("install", function(event) {

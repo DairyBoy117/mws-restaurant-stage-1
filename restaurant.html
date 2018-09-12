@@ -55,9 +55,25 @@
     <!-- Beginning reviews -->
     <section id="reviews-container">
         <ul id="reviews-list"></ul>
-        <div id="add-review">
-
-        </div>
+    </section>
+    <section id="add-review">
+      <label id="submitReview"><h2>Submit a Review</h2></label>
+      <form id="reviewForm" aria-labelledby="submitReview" accept-charset="utf-8">
+        <fieldset>
+          <label><input id="reviewUserName" type="text" aria-label="User Name" name="userName" placeholder="Username"></label>
+          <select id="reviewRating" aria-label="Restaurant Rating">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+          <label>Rating<textarea rows="4" cols="30" id="restaurantComments" aria-label="Comments" name="comments" placeholder="Comments"></textarea></label>
+          <div id="submitHolder">
+            <button id="reviewSubmitBtn">Submit</button>
+          </div>
+        </fieldset>
+      </form>
     </section>
     <!-- End reviews -->
     <!-- Beginning map -->

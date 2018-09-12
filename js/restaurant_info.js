@@ -1,6 +1,8 @@
 let restaurant;
 var map;
 let isFavorite;
+let reviews;
+let pendingReviews;
 
 /**
  * Initialize Google map, called from HTML.
@@ -41,6 +43,8 @@ fetchRestaurantFromURL = (callback) => {
         return;
       }
       fetchIfFavorite(id);
+      fetchReviews();
+      fetchPendingReviews();
       fillRestaurantHTML();
 
       callback(null, restaurant)
@@ -53,18 +57,6 @@ fetchRestaurantFromURL = (callback) => {
  */
 fillRestaurantHTML = (restaurant = self.restaurant) => {
   const div = document.getElementById("maincontent");
- /*console.log(restaurant);
-  isFavorite = (restaurant["is_favorite"] && restaurant["is_favorite"].toString() === "true") ? true : false;
-  const favoriteDiv = document.createElement("div");
-  favoriteDiv.className = "favorite-icon";
-  const favorite = document.createElement("button");
-  favorite.innerHTML = isFavorite
-  ? "<i class='fas fa-heart'></i> <span>Restaurant is a favorite</span>"
-  : "<i class='far fa-heart'></i> <span>Restaurant is not a favorite</span>";
-  favorite.id = "favorite-icon";
-  favorite.onclick = event => toggleFavorite(restaurant.id, !isFavorite);
-  favoriteDiv.append(favorite);
-  div.append(favoriteDiv);*/
   
   const name = document.getElementById('restaurant-name');
   name.innerHTML = restaurant.name;
@@ -90,8 +82,35 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   if (restaurant.operating_hours) {
     fillRestaurantHoursHTML();
   }
-  // fill reviews
-  fillReviewsHTML();
+
+}
+
+fetchReviews = () => {
+  let oldReviews;
+  DBHelper.fetchRestaurantReviews(self.restaurant, (error, reviews) => {
+    if (!reviews) {
+      console.log('No reviews found');
+      return;
+    } else {
+      self.reviews = reviews;
+      fillReviewsHTML();
+    }
+  })
+}
+fetchPendingReviews = () => {
+  DBHelper.fetchPendingReviews(self.restaurant, (tempReview, review) => {
+    const container = document.getElementById('reviews-container');
+    const ul = document.getElementById('reviews-list');
+    if (review) {
+      ul.appendChild(createReviewHTML(review));
+      container.appendChild(ul);
+    } else if (tempReview) {
+      ul.appendChild(createReviewHTML(tempReview));
+      container.appendChild(ul);
+    } else {
+      console.log("No pending reviews")
+    }
+  })
 }
 
 fetchIfFavorite = (id) => {
@@ -175,7 +194,7 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
 /**
  * Create all reviews HTML and add them to the webpage.
  */
-fillReviewsHTML = (reviews = self.restaurant.reviews) => {
+fillReviewsHTML = (reviews = self.reviews) => {
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h3');
   title.innerHTML = 'Reviews';
@@ -195,6 +214,40 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   container.appendChild(ul);
 }
 
+let formReview = document.getElementById('reviewForm');
+formReview.addEventListener('submit', function(e) {
+  e.preventDefault();
+})
+
+let submitReview = document.getElementById('reviewSubmitBtn');
+submitReview.addEventListener('click', function(event) {
+  let userName = document.getElementById('reviewUserName').value;
+  let rating = document.getElementById('reviewRating').value;
+  let comments = document.getElementById('restaurantComments').value;
+  let oldReview = {
+    name: userName,
+    restaurant_id: self.restaurant.id,
+    rating: rating,
+    comments: comments
+  }
+  DBHelper.submitReview(oldReview, (error, review) => {
+    let newReview = review;
+    let formReview = document.getElementById('reviewForm');
+    const container = document.getElementById('reviews-container');
+    const ul = document.getElementById('reviews-list');
+    if (!newReview) {
+      console.warn('No connectivity')
+      formReview.reset();
+      ul.appendChild(createReviewHTML(oldReview));
+      container.appendChild(ul);
+    } else {
+      formReview.reset();
+      ul.appendChild(createReviewHTML(review));
+      container.appendChild(ul);
+    }
+  })
+})
+
 /**
  * Create review HTML and add it to the webpage.
  */
@@ -206,11 +259,11 @@ createReviewHTML = (review) => {
   name.setAttribute('tabindex', '0');
   name.innerHTML = review.name;
   li.appendChild(name);
-
+/*
   const date = document.createElement('p');
   date.innerHTML = review.date;
   li.appendChild(date);
-
+*/
   const rating = document.createElement('p');
   rating.innerHTML = `Rating: ${review.rating}`;
   li.appendChild(rating);
@@ -252,4 +305,13 @@ getParameterByName = (name, url) => {
   if (!results[2])
     return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
+/**
+ * Hide / Show map.
+ */
+
+function showMap() {
+  let element = document.getElementById("map");
+  element.classList.toggle("hidden");
 }

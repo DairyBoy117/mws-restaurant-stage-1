@@ -200,12 +200,3 @@ function showMap() {
   let element = document.getElementById("map");
   element.classList.toggle("hidden");
 }
-
-
-const handleFavoriteClick = () => {
-  fetch(`http://localhost:1337/restaurants/${e.data.id}/?is_favorite=${e.data.value}`, {
-      method: 'PUT'
-  }).then(function(res){
-      return res.json()
-  });
-}
