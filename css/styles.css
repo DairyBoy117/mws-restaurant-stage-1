@@ -113,10 +113,6 @@ nav h1 a {
   background-color: #ccc;
 }
 
-#map.hidden {
-  display: none;
-}
-
 #show-map button:hover {
   cursor: pointer;
   background-color: #f3f3f3;
