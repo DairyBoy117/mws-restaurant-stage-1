@@ -41,8 +41,8 @@
       <div class="content" aria-labelledby="restaurant-name">
         <h2 id="restaurant-name" tabindex="0"></h2>
         <div class="switchContainer">
+          <label id="favoriteHeader">Add to Favorites</label>
           <input type="checkbox" id="isFavorited" aria-checked="false" aria-labelledby="favoriteHeader">
-          <h3 id="favoriteHeader">Add to Favorites</h3>
         </div>
         <img id="restaurant-img">
         <div id="restaurant-details" aria-label="Restaurant Details">
@@ -58,22 +58,29 @@
         <ul id="reviews-list"></ul>
     </section>
     <section id="add-review">
-      <label id="submitReview"><h2>Submit a Review</h2></label>
+      <h3>Submit a Review</h3>
       <form id="reviewForm" aria-labelledby="submitReview" accept-charset="utf-8">
-        <fieldset>
-          <label><input id="reviewUserName" type="text" aria-label="User Name" name="userName" placeholder="Username"></label>
-          <select id="reviewRating" aria-label="Restaurant Rating">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-          </select>
-          <label>Rating<textarea rows="4" cols="30" id="restaurantComments" aria-label="Comments" name="comments" placeholder="Comments"></textarea></label>
-          <div id="submitHolder">
+          <div class="form-content">
+              <label for="reviewUserName" >Username</label>
+              <input id="reviewUserName" type="text" aria-label="User Name" name="userName" placeholder="Username">
+          </div>
+          <div class="form-content">
+              <label for="reviewRating">Rating</label>
+              <select id="reviewRating" aria-label="Restaurant Rating">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+          </div>
+          <div class="form-content">
+              <label for="restaurantComments">Rating</label>
+              <textarea id="restaurantComments" aria-label="Comments" name="comments" placeholder="Comments"></textarea>
+          </div>
+          <div id="submitHolder" class="form-content">
             <button id="reviewSubmitBtn">Submit</button>
           </div>
-        </fieldset>
       </form>
     </section>
     <!-- End reviews -->

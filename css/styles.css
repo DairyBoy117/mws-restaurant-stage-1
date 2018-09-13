@@ -181,7 +181,8 @@ nav h1 a {
   font-size: 18px;
 }
 #restaurants-list li button,
-#show-map button {
+#show-map button,
+#submitHolder button {
   background-color: #EE7600;
   border: 2px solid #EE7600;
   color: #fff;
@@ -193,7 +194,8 @@ nav h1 a {
   text-decoration: none;
   text-transform: uppercase;
 }
-#restaurants-list li button:hover {
+#restaurants-list li button:hover,
+#submitHolder button:hover {
   cursor: pointer;
   background-color: #fff;
   color: #EE7600;
@@ -249,7 +251,8 @@ nav h1 a {
 #reviews-container {
   border-top: 1px solid #fff;
 }
-#reviews-container h3 {
+#reviews-container h3,
+#add-review h3 {
   color: #EE7600;
   font-size: 24pt;
   font-weight: 300;
@@ -275,4 +278,56 @@ nav h1 a {
 }
 #restaurant-hours td {
   color: #666;
+}
+
+#restaurant-container .content {
+  position: relative;
+}
+
+.switchContainer {
+  position: absolute;
+  right: 30px;
+  top: 35px;
+}
+
+.switchContainer label {
+  position: absolute;
+  left: -9999px;
+}
+
+.switchContainer input:after {
+  font-family: "Font Awesome 5 Free";
+  display: inline-block;
+  content: "\f004";
+  font-weight: 900;
+  font-size: 35px;
+  position: absolute;
+  top: -5px;
+  left: -6px;
+  color: #a9a9a9;
+}
+
+.switchContainer input:checked:after {
+  color: #B20000;
+}
+
+#add-review {
+  width: 100%;
+}
+
+#add-review fieldset {
+  border: none;
+}
+
+.form-content {
+  margin-bottom: 15px;
+}
+
+.form-content label {
+  display: block;
+}
+
+.form-content textarea {
+  width: 100%;
+  height: 200px;
 }

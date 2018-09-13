@@ -10,6 +10,10 @@
   order: 1;
 }
 
+#add-review {
+  order: 3;
+}
+
 #restaurants-list h3,
 #restaurants-list p {
   padding: 0 15px
@@ -35,10 +39,12 @@
 }
 
 #reviews-container h3,
-#reviews-list {
+#reviews-list,
+#add-review {
   margin-left: 20px;
   margin-right: 20px;
 }
+
 
 
 
@@ -54,6 +60,20 @@
     vertical-align: top;
   }
   
+}
+
+@media screen and (max-width: 649px) {
+  .inside #map-container {
+    order: 3;
+  }
+
+  .inside #reviews-container {
+    order: 2;
+  } 
+
+  .inside #add-review {
+    order: 2;
+  }
 }
 
 @media screen and (min-width: 650px) {
